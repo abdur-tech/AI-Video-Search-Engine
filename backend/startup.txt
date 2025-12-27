@@ -1,0 +1,16 @@
+# Terminal 1: Start FastAPI
+uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+# Terminal 2: Start Celery worker
+uv run celery -A celery_worker worker --loglevel=info
+
+5. Test the API
+Bashcurl -X POST "http://localhost:8000/upload-video/" \
+  -F "file=@/path/to/your/video.mp4"
+You’ll get immediate response that processing started. Check Celery worker logs for transcription progress and result.
+
+Next Steps (After This Works)
+
+Save transcript + timestamps to PostgreSQL or Chroma vector DB
+Add semantic search endpoint using embeddings
+Add status endpoint /status/{video_id} using Celery result backend

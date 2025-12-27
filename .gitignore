@@ -1,0 +1,46 @@
+# --- Python / uv ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.python-version
+# Ignore uv.lock ONLY if you are making a library; 
+# For your Video Search Engine (an app), DO NOT ignore it.
+# uv.lock 
+
+# --- Environment & Secrets ---
+.env
+.env.*
+!.env.example
+secrets.json
+
+# --- FastAPI / Static / Logs ---
+*.log
+data/
+uploads/
+temp/
+static/
+
+# --- Databases ---
+*.db
+*.sqlite3
+
+# --- Testing & Coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+nosetests.xml
+coverage.xml
+
+# --- IDEs & Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store (macOS)
+Thumbs.db (Windows)
+
+# --- Packaging & Distribution ---
+dist/
+build/
+*.egg-info/
