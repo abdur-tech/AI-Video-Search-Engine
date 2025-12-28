@@ -21,7 +21,6 @@ async def upload_video(file: UploadFile):
 
     # Fire async Celery task
     process_video.delay(video_path, audio_path)
-
     return {
         "video_id": video_id,
         "status": "uploaded and processing started",

@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 .venv/
 .python-version
+*.mp4
+*.wav
 # Ignore uv.lock ONLY if you are making a library; 
 # For your Video Search Engine (an app), DO NOT ignore it.
 # uv.lock 

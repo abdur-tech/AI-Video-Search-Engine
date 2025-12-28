@@ -1,29 +1,29 @@
 from celery import Celery
-from .transcribe import transcribe_audio
+
 from .utils import extract_audio
 from .configs import settings
-import os
-
-celery = Celery(__name__)
-celery.conf.broker_url = settings.CELERY_BROKER_URL
-celery.conf.result_backend = settings.CELERY_BROKER_URL
-celery.conf.result_backend=settings.CELERY_RESULT_BACKEND
-# Required for memory backend to work without a separate Redis server
-celery.conf.task_always_eager = True  
-celery.conf.task_eager_propagates = True
-
+celery = Celery(
+    __name__, 
+    broker=settings.CELERY_BROKER_URL,       
+    backend=settings.CELERY_RESULT_BACKEND,  
+)
+celery.conf.update(
+    task_always_eager=False,       
+    task_eager_propagates=False,
+    worker_prefetch_multiplier=1,  # Good for long-running tasks (like transcription)
+    task_acks_late=True,
+    result_expires=3600,
+)
 @celery.task(name="process_video")
 def process_video(video_path: str, audio_path: str):
     try:
         # Extract audio
         extract_audio(video_path, audio_path)
-
         # Transcribe
+        from .transcribe import transcribe_audio
         result = transcribe_audio(audio_path)
-
-        # Here you could save result to DB, vector index, etc.
-        print("Transcription completed:", result["text"][:200])
-
+        with open("tmp_output.txt", 'w', encoding='utf-8') as file:
+            file.write(str(result))
         return {"status": "success", "transcript": result}
     except Exception as e:
         return {"status": "error", "message": str(e)}

@@ -1,8 +1,16 @@
+#Install ffmpeg for windows by opening powershell
+winget install ffmpeg
+
+
+#install redis for windows
+https://github.com/tporadowski/redis/releases and click Redis-x64-5.0.14.1.msi
+ under asset
+
 # Terminal 1: Start FastAPI
-uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 # Terminal 2: Start Celery worker
-uv run celery -A celery_worker worker --loglevel=info
+uv run celery -A celery_worker worker --pool=solo --loglevel=info
 
 5. Test the API
 Bashcurl -X POST "http://localhost:8000/upload-video/" \
